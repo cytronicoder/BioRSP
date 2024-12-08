@@ -14,8 +14,4 @@ If you use **BioRSP** in your research, please cite:
 
 ## Contact
 
-For questions, collaborations, or feedback, please contact:
-
-**Zeyu Yao**
-Stamford American International School
-Email: [cytronicoder@gmail.com](mailto:cytronicoder@gmail.com)
+For questions, collaborations, or feedback, please contact me at [cytronicoder@gmail.com](mailto:cytronicoder@gmail.com). Please make sure to include "BioRSP" in the subject line. Thank you!
