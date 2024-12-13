@@ -15,11 +15,13 @@ setup(
     url="https://github.com/cytronicoder/biorsp",
     packages=find_packages(),
     install_requires=[
-        "numpy>=2.1.0",
+        "numpy>=2.0.0",
         "matplotlib>=3.9.0",
         "scipy>=1.14.0",
         "pandas>=2.2.0",
+        "scikit-learn>=1.5.0",
         "seaborn>=0.13.0",
+        "umap-learn>=0.5.0",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
