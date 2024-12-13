@@ -5,7 +5,12 @@ from .gen import generate_points
 from .coord import cartesian_to_polar, within_angle
 from .hist import compute_histogram
 from .cdf import compute_cdf, compute_cdfs
-from .diff import compute_diff
+from .diff import compute_diff, compute_rsp_area, compute_deviation_score
+from .prep import preprocess_dge_matrix
+from .embed import compute_tsne, compute_umap
+from .clust import compute_dbscan
+
+__version__ = "0.1.0"
 
 __all__ = [
     "generate_points",
@@ -15,6 +20,12 @@ __all__ = [
     "compute_cdf",
     "compute_cdfs",
     "compute_diff",
+    "compute_rsp_area",
+    "preprocess_dge_matrix",
+    "compute_deviation_score",
+    "compute_tsne",
+    "compute_umap",
+    "compute_dbscan",
 ]
 
 
