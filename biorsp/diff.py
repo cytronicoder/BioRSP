@@ -7,20 +7,21 @@ def compute_diff(
     fg_cdf: np.ndarray,
     bg_cdf: np.ndarray,
     mode: str = "absolute",
+    epsilon: float = 1e-9,
 ) -> float:
     """
     Compute the RSP diff value based on foreground and background CDFs.
 
-    RSP_diff = union_area - intersection_area
-
-    Where:
-    - union_area is the integral (sum) of the maximum of fg_cdf and bg_cdf across all bins.
-    - intersection_area is the integral (sum) of the minimum of fg_cdf and bg_cdf across all bins.
+    Modes:
+    - "absolute": Use the integral of the absolute differences.
+    - "relative": Normalize differences by bg_cdf + epsilon to emphasize differences
+                  where background is small.
 
     Parameters:
     - fg_cdf (np.ndarray): 1D array representing the foreground CDF.
     - bg_cdf (np.ndarray): 1D array representing the background CDF.
-    - mode (str): 'absolute' or 'relative' to specify the type of RSP diff calculation.
+    - mode (str): 'absolute' or 'relative' for the type of RSP diff calculation.
+    - epsilon (float): A small value to avoid division by zero in relative mode.
 
     Returns:
     - float: The computed RSP diff value.
@@ -40,28 +41,24 @@ def compute_diff(
     if fg_cdf.shape != bg_cdf.shape:
         raise ValueError("fg_cdf and bg_cdf must have the same shape.")
 
-    # Assuming the CDFs are defined over [0, 1] with equal spacing:
     n = len(fg_cdf)
     if n < 2:
         raise ValueError("CDF arrays must contain at least two points.")
 
-    # Compute spacing between CDF points
     delta_x = 1.0 / (n - 1)
 
-    # Compute union and intersection
-    union_cdf = np.maximum(fg_cdf, bg_cdf)
-    intersection_cdf = np.minimum(fg_cdf, bg_cdf)
+    # Compute absolute differences
+    abs_diff = np.abs(fg_cdf - bg_cdf)
 
-    # Integrate by summation
-    union_area = np.sum(union_cdf) * delta_x
-    intersection_area = np.sum(intersection_cdf) * delta_x
-
-    rsp_diff = union_area - intersection_area
-
-    if mode == "relative":
-        # Avoid division by zero if union_area is zero
-        if union_area != 0:
-            rsp_diff /= union_area
+    if mode == "absolute":
+        # Integrate absolute differences
+        rsp_diff = np.sum(abs_diff) * delta_x
+    elif mode == "relative":
+        # Normalize differences by bg_cdf + epsilon
+        rel_diff = abs_diff / (bg_cdf + epsilon)
+        rsp_diff = np.sum(rel_diff) * delta_x
+    else:
+        raise ValueError("mode must be either 'absolute' or 'relative'")
 
     return rsp_diff
 
@@ -72,7 +69,6 @@ def compute_rsp_area(diffs: np.ndarray) -> float:
 
     Parameters:
     - diffs (np.ndarray): 1D array of radii (e.g., diff values).
-    - resolution (float): Angular resolution in radians.
 
     Returns:
     - float: Enclosed area.
