@@ -127,21 +127,12 @@ def normalize_histograms(
     foreground_histogram: np.ndarray, background_histogram: np.ndarray
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
-    Normalizes histograms to sum to 1. If foreground is empty, returns zeros for foreground.
+    Normalizes histograms of foreground and background points within a scanning window.
     """
-    foreground_sum = np.sum(foreground_histogram)
     background_sum = np.sum(background_histogram)
 
-    foreground_histogram_normalized = (
-        foreground_histogram / foreground_sum
-        if foreground_sum > 0
-        else np.zeros_like(foreground_histogram)
-    )
-    background_histogram_normalized = (
-        background_histogram / background_sum
-        if background_sum > 0
-        else np.zeros_like(background_histogram)
-    )
+    foreground_histogram_normalized = foreground_histogram / background_sum
+    background_histogram_normalized = background_histogram / background_sum
 
     return foreground_histogram_normalized, background_histogram_normalized
 
