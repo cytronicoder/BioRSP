@@ -127,23 +127,16 @@ def normalize_histograms(
     foreground_histogram: np.ndarray, background_histogram: np.ndarray
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
-    Normalizes histograms to sum to 1. If foreground is empty, returns zeros for foreground.
+    Normalizes histograms.
     """
-    foreground_sum = np.sum(foreground_histogram)
-    background_sum = np.sum(background_histogram)
-
-    foreground_histogram_normalized = (
-        foreground_histogram / foreground_sum
-        if foreground_sum > 0
-        else np.zeros_like(foreground_histogram)
+    normalized_foreground_histogram = foreground_histogram / np.sum(
+        background_histogram
     )
-    background_histogram_normalized = (
-        background_histogram / background_sum
-        if background_sum > 0
-        else np.zeros_like(background_histogram)
+    normalized_background_histogram = background_histogram / np.sum(
+        background_histogram
     )
 
-    return foreground_histogram_normalized, background_histogram_normalized
+    return normalized_foreground_histogram, normalized_background_histogram
 
 
 def calculate_cdfs(
