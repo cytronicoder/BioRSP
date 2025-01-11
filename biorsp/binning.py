@@ -130,7 +130,7 @@ def normalize_histograms(
     Normalizes histograms.
     """
     normalized_foreground_histogram = foreground_histogram / np.sum(
-        background_histogram
+        foreground_histogram
     )
     normalized_background_histogram = background_histogram / np.sum(
         background_histogram
